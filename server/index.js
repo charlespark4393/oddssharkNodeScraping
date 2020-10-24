@@ -5,7 +5,7 @@ const cors = require('cors')
 const puppeteer = require('puppeteer');
 
 const browserOptions = {
-  headless: false,
+  headless: true,
   defaultViewport: {
     width: 1920,
     height: 1080,
@@ -30,7 +30,15 @@ app.use(bodyParser.json())
 
 app.use(cors())
 
-function NFL() {
+const spreadSselector = '.op-customization-wrapper .dropdown__list .dropdown__list-item:nth-child(nthChild)'
+const setting = {
+  type: {
+    Moneyline: 1, 
+    Spread: 2,
+  }
+}
+
+function NFL(type) {
   return new Promise(async (resolve, reject) => {
     const browser = await puppeteer.launch(browserOptions);
     const page = await browser.newPage();
@@ -40,6 +48,10 @@ function NFL() {
       waitUntil: 'networkidle2',
       timeout: 0
     });
+
+    const spread_selector = spreadSselector.replace('nthChild', type)
+    await page.waitForSelector(spread_selector);
+    await page.evaluate((spread_selector) => document.querySelector(spread_selector).click(), spread_selector); 
 
     let names = await page.evaluate(({}) => {
       return  Array.from(document.querySelectorAll('.op-team-data-wrapper.not-futures>div'))
@@ -103,11 +115,15 @@ function NFL() {
     await page.close();
     await browser.close();
 
-    resolve(results)
+    resolve({
+      results: results,
+      url: url
+    })
+    
   })
 }
 
-function NBA() {
+function NBA(type) {
   return new Promise(async (resolve, reject) => {
     const browser = await puppeteer.launch(browserOptions);
     const page = await browser.newPage();
@@ -163,11 +179,14 @@ function NBA() {
     await page.close();
     await browser.close();
 
-    resolve(results)
+    resolve({
+      results: results,
+      url: url
+    })
   })
 }
 
-function MLB() {
+function MLB(type) {
   return new Promise(async (resolve, reject) => {
     const browser = await puppeteer.launch(browserOptions);
     const page = await browser.newPage();
@@ -178,6 +197,10 @@ function MLB() {
       timeout: 0
     });
 
+    const spread_selector = spreadSselector.replace('nthChild', type)
+    await page.waitForSelector(spread_selector);
+    await page.evaluate((spread_selector) => document.querySelector(spread_selector).click(), spread_selector); 
+
     let names = await page.evaluate(({}) => {
       return  Array.from(document.querySelectorAll('.op-team-data-wrapper.not-futures>div'))
       .map(row => {
@@ -240,11 +263,14 @@ function MLB() {
     await page.close();
     await browser.close();
 
-    resolve(results)
+    resolve({
+      results: results,
+      url: url
+    })
   })
 }
 
-function NCAAF() {
+function NCAAF(type) {
   return new Promise(async (resolve, reject) => {
     const browser = await puppeteer.launch(browserOptions);
     const page = await browser.newPage();
@@ -255,6 +281,10 @@ function NCAAF() {
       timeout: 0
     });
 
+    const spread_selector = spreadSselector.replace('nthChild', type)
+    await page.waitForSelector(spread_selector);
+    await page.evaluate((spread_selector) => document.querySelector(spread_selector).click(), spread_selector); 
+
     let names = await page.evaluate(({}) => {
       return  Array.from(document.querySelectorAll('.op-team-data-wrapper.not-futures>div'))
       .map(row => {
@@ -317,11 +347,14 @@ function NCAAF() {
     await page.close();
     await browser.close();
 
-    resolve(results)
+    resolve({
+      results: results,
+      url: url
+    })
   })
 }
 
-function NHL() {
+function NHL(type) {
   return new Promise(async (resolve, reject) => {
     const browser = await puppeteer.launch(browserOptions);
     const page = await browser.newPage();
@@ -377,11 +410,14 @@ function NHL() {
     await page.close();
     await browser.close();
 
-    resolve(results)
+    resolve({
+      results: results,
+      url: url
+    })
   })
 }
 
-function UFC() {
+function UFC(type) {
   return new Promise(async (resolve, reject) => {
     const browser = await puppeteer.launch(browserOptions);
     const page = await browser.newPage();
@@ -391,6 +427,10 @@ function UFC() {
       waitUntil: 'networkidle2',
       timeout: 0
     });
+
+    // const spread_selector = spreadSselector.replace('nthChild', type)
+    // await page.waitForSelector(spread_selector);
+    // await page.evaluate((spread_selector) => document.querySelector(spread_selector).click(), spread_selector); 
 
     let names = await page.evaluate(({}) => {
       return  Array.from(document.querySelectorAll('.op-team-data-wrapper.not-futures>div'))
@@ -452,11 +492,14 @@ function UFC() {
     await page.close();
     await browser.close();
 
-    resolve(results)
+    resolve({
+      results: results,
+      url: url
+    })
   })
 }
 
-function Politics() {
+function Politics(type) {
   return new Promise(async (resolve, reject) => {
     const browser = await puppeteer.launch(browserOptions);
     const page = await browser.newPage();
@@ -512,11 +555,14 @@ function Politics() {
     await page.close();
     await browser.close();
 
-    resolve(results)
+    resolve({
+      results: results,
+      url: url
+    })
   })
 }
 
-function NCAAB() {
+function NCAAB(type) {
   return new Promise(async (resolve, reject) => {
     const browser = await puppeteer.launch(browserOptions);
     const page = await browser.newPage();
@@ -572,11 +618,14 @@ function NCAAB() {
     await page.close();
     await browser.close();
 
-    resolve(results)
+    resolve({
+      results: results,
+      url: url
+    })
   })
 }
 
-function BOXING() {
+function BOXING(type) {
   return new Promise(async (resolve, reject) => {
     const browser = await puppeteer.launch(browserOptions);
     const page = await browser.newPage();
@@ -586,6 +635,10 @@ function BOXING() {
       waitUntil: 'networkidle2',
       timeout: 0
     });
+
+    // const spread_selector = spreadSselector.replace('nthChild', type)
+    // await page.waitForSelector(spread_selector);
+    // await page.evaluate((spread_selector) => document.querySelector(spread_selector).click(), spread_selector); 
 
     let names = await page.evaluate(({}) => {
       return  Array.from(document.querySelectorAll('.op-team-data-wrapper.not-futures>div'))
@@ -647,11 +700,14 @@ function BOXING() {
     await page.close();
     await browser.close();
 
-    resolve(results)
+    resolve({
+      results: results,
+      url: url
+    })
   })
 }
 
-function CFL() {
+function CFL(type) {
   return new Promise(async (resolve, reject) => {
     const browser = await puppeteer.launch(browserOptions);
     const page = await browser.newPage();
@@ -707,11 +763,14 @@ function CFL() {
     await page.close();
     await browser.close();
 
-    resolve(results)
+    resolve({
+      results: results,
+      url: url
+    })
   })
 }
 
-function WNBA() {
+function WNBA(type) {
   return new Promise(async (resolve, reject) => {
     const browser = await puppeteer.launch(browserOptions);
     const page = await browser.newPage();
@@ -721,6 +780,10 @@ function WNBA() {
       waitUntil: 'networkidle2',
       timeout: 0
     });
+
+    const spread_selector = spreadSselector.replace('nthChild', type)
+    await page.waitForSelector(spread_selector);
+    await page.evaluate((spread_selector) => document.querySelector(spread_selector).click(), spread_selector); 
 
     let names = await page.evaluate(({}) => {
       return  Array.from(document.querySelectorAll('.op-team-data-wrapper.not-futures>div'))
@@ -784,11 +847,14 @@ function WNBA() {
     await page.close();
     await browser.close();
 
-    resolve(results)
+    resolve({
+      results: results,
+      url: url
+    })
   })
 }
 
-function Golf() {
+function Golf(type) {
   return new Promise(async (resolve, reject) => {
     const browser = await puppeteer.launch(browserOptions);
     const page = await browser.newPage();
@@ -844,21 +910,28 @@ function Golf() {
     await page.close();
     await browser.close();
 
-    resolve(results)
+    resolve({
+      results: results,
+      url: url
+    })
   })
 }
 
 app.post('/scraping', async (req, res) => {
   try {
-    const { sport } = req.body;
-    const result = await eval(sport + "()")
+    const { sport, spread } = req.body;
+    const type = setting.type[spread]
+    const Res = await eval(sport + `(${type})`)
+    const result = Res.results
+    const url = Res.url
     let json = {}
     for (let i = 0 ; i < result.length ; i += 1) {
       json[i+1] = result[i]
     }
     res.send({
       success: 1,
-      json: json
+      json: json,
+      url: url
     })
   } catch {
     res.send({
