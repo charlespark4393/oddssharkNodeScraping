@@ -117,7 +117,7 @@ class App extends Component {
               </div>
               <div className="mb-3">
                 <div className="mb-2">
-                  <a className="" href={url} target="_blank">{url}</a>
+                  <a className="" href={url} target="_blank" without rel="noreferrer">{url}</a>
                 </div>
                 <ReactJson 
                   src={result} 
