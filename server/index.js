@@ -920,7 +920,8 @@ function Golf(type) {
 app.post('/scraping', async (req, res) => {
   try {
     const { sport, spread } = req.body;
-    const type = setting.type[spread]
+    let type = setting.type[spread]
+    if (type === undefined) type = ''
     const Res = await eval(sport + `(${type})`)
     const result = Res.results
     const url = Res.url

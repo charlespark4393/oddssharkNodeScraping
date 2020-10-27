@@ -46,12 +46,28 @@ code {
   table.dataTable thead .sorting_desc_disabled:before {
   bottom: .5em;
   }
-  .t-image {
-    width: 100px;
-  }
-  th {
-    text-align: center;
-  }
-  .table-select-sport {
-    width: 250px;
-  }
+.t-image {
+  width: 100px;
+}
+th {
+  text-align: center;
+}
+.table-select-sport {
+  width: 250px;
+}
+.table-spread-btn {
+  width: 150px !important;
+}
+.tr-color {
+  background-color: rgba(0,0,0,.05);
+}
+.vertical-align-center {
+  vertical-align: center !important;
+  padding-top: 24px !important;
+}
+.table td {
+  vertical-align: center !important;
+}
+.table-con {
+  height: calc(100vh - 150px);
+}

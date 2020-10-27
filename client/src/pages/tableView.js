@@ -19,6 +19,7 @@ class tableView extends Component {
     this.changeSport = this.changeSport.bind(this)
     this.changeSpread = this.changeSpread.bind(this)
     this.getResult = this.getResult.bind(this)
+    this.renderContent = this.renderContent.bind(this)
   }
 
   getResult() {
@@ -82,6 +83,71 @@ class tableView extends Component {
     }, 100)
   }
 
+  renderContent() {
+    let day = ''
+    let rlt = ''
+    const { result } = this.state
+    for (var key in result) {
+      const item = result[key]
+      if (item.day !== day) {
+        day = item.day
+        rlt += 
+        `
+          <tr>
+            <td colspan="13" class="tr-color"><h3>${day}</h3></td>
+          </tr>
+        `
+      }
+      if (item.value !== undefined) {
+        let values = ''
+        const value = item.value
+        for (let i = 0 ; i < value.length ; i += 1) {
+          values += `<td>${value[i]}</td>`
+        }
+        rlt += 
+        `
+          <tr>
+            <td colspan="3">${item.name}</td>
+            ${values}
+          </tr>
+        `
+      } else {
+        for (let i = 1 ; i <= 2 ; i += 1) {
+          let values = ''
+          const value = item[i].value
+          for (var key1 in value) {
+            values += `<td>${value[key1][0]} ${value[key1][1]}</td>`
+          }
+          let name = item[i].name
+          let id = item[i].id
+          if (id === undefined) id = ''
+          if (i === 1) {
+            rlt += 
+            `
+              <tr>
+                <td rowspan="2" class="vertical-align-center">${item.time}</td>
+                <td>${id}</td>
+                <td>${name}</td>
+                ${values}
+              </tr>
+            `
+          } else {
+            rlt += 
+            `
+              <tr>
+                <td>${id}</td>
+                <td>${name}</td>
+                ${values}
+              </tr>
+            `
+          }
+        }
+        rlt += `<tr><td colspan="13" class="tr-color"></td></tr>`
+      }
+    }
+    return rlt;
+  }
+
   render() {
     const {spread, spreads, sport, sports} = this.state
     return (
@@ -111,75 +177,66 @@ class tableView extends Component {
                 </div>
               </div>
             </div>
-            <table class="table table-striped table-bordered table-responsive">
-              <thead>
-                <tr>
-                  <th colspan="3">
-                    <div className="dropdown">
-                      <button className="btn btn-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButtonSpread" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {spread}
-                      </button>
-                      <div className="dropdown-menu w-100" aria-labelledby="dropdownMenuButtonSpread">
-                        {
-                          spreads.map((item, index) => {
-                            return (
-                              <div className="dropdown-item cursor-hover" value={item} key={index} onClick={(e) => this.changeSpread(e)}>{item}</div>
-                            )
-                          })
-                        }
+            <div className="table-con">
+              <table className="table table-bordered table-responsive table-sm h-100">
+                <thead>
+                  <tr>
+                    <th colSpan="3">
+                      <div className="dropdown">
+                        <button className="table-spread-btn btn btn-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButtonSpread" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          {spread}
+                        </button>
+                        <div className="dropdown-menu w-100" aria-labelledby="dropdownMenuButtonSpread">
+                          {
+                            spreads.map((item, index) => {
+                              return (
+                                <div className="dropdown-item cursor-hover" value={item} key={index} onClick={(e) => this.changeSpread(e)}>{item}</div>
+                              )
+                            })
+                          }
+                        </div>
                       </div>
-                    </div>
-                  </th>
-                  <th>
-                    <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_opening_eng.png"></img>
-                  </th>
-                  <th>
-                    <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_bovada.png"></img>
-                  </th>
-                  <th>
-                    <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_betonline_0.png"></img>
-                  </th>
-                  <th>
-                    <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_intertops.png"></img>
-                  </th>
-                  <th>
-                    <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_sportsbetting.png"></img>
-                  </th>
-                  <th>
-                    <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_betnow.png"></img>
-                  </th>
-                  <th>
-                    <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_gtbets_2.png"></img>
-                  </th>
-                  <th>
-                    <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_skybook.png"></img>
-                  </th>
-                  <th>
-                    <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_5dimes_0.png"></img>
-                  </th>
-                  <th>
-                    <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_sportbet.png"></img>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>John</td>
-                  <td>Doe</td>
-                  <td>john@example.com</td>
-                  <td>John</td>
-                  <td>Doe</td>
-                  <td>john@example.com</td>
-                  <td>John</td>
-                  <td>Doe</td>
-                  <td>john@example.com</td>
-                  <td>John</td>
-                  <td>Doe</td>
-                  <td>john@example.com</td>
-                  <td>john@example.com</td>
-                </tr>
-              </tbody>
-            </table>
+                    </th>
+                    <th>
+                      <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_opening_eng.png"></img>
+                    </th>
+                    <th>
+                      <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_bovada.png"></img>
+                    </th>
+                    <th>
+                      <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_betonline_0.png"></img>
+                    </th>
+                    <th>
+                      <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_intertops.png"></img>
+                    </th>
+                    <th>
+                      <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_sportsbetting.png"></img>
+                    </th>
+                    <th>
+                      <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_betnow.png"></img>
+                    </th>
+                    <th>
+                      <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_gtbets_2.png"></img>
+                    </th>
+                    <th>
+                      <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_skybook.png"></img>
+                    </th>
+                    <th>
+                      <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_5dimes_0.png"></img>
+                    </th>
+                    <th>
+                      <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_sportbet.png"></img>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody dangerouslySetInnerHTML={{ __html: this.renderContent() }} >
+
+                  {/* {
+                    this.renderContent()
+                  } */}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
