@@ -23,6 +23,58 @@ class tableView extends Component {
     this.getResult = this.getResult.bind(this)
     this.renderContent = this.renderContent.bind(this)
     this.jsonView = this.jsonView.bind(this)
+    this.renderResults = this.renderResults.bind(this)
+    this.calcResult = this.calcResult.bind(this)
+    this.getColSpan = this.getColSpan.bind(this)
+  }
+
+  getColSpan() {
+    if (this.state.sport === 'UFC') return 14
+    return 13
+  }
+
+  renderResults() {
+    if (this.state.sport === 'UFC') {
+      return (
+        <th className="pl-4 pr-4 font-weight-bold">Results</th>
+      )
+    }
+  }
+
+  calcResult(values) {
+    if (this.state.sport === 'UFC') {
+      let ints = []
+      for (var key in values) {
+        ints.push(parseInt(values[key][0]))
+        ints.push(parseInt(values[key][1]))
+      }
+      let positive = []
+      let negative = []
+      let positive_max = -99999
+      let negative_min = 99999
+      for (let i = 0 ; i < ints.length ; i += 1) {
+        if (isNaN(ints[i])) continue
+        if (ints[i] > 0) {
+          positive.push(ints[i])
+          if (positive_max < ints[i]) positive_max = ints[i]
+        }
+        if (ints[i] < 0) {
+          negative.push(Math.abs(ints[i]))
+          if (negative_min > Math.abs(ints[i])) negative_min = Math.abs(ints[i])
+        }
+      }
+      let result = '-'
+      if (positive.length > negative.length) {
+        result = (100 / (positive_max + 100)) * 100
+      }
+      else if (positive.length < negative.length)  {
+        result = (negative_min / (negative_min + 100)) * 100
+      }
+      if (result !== '-') result = result.toFixed(2) + '%'
+      return (
+        `<td class="pl-4 pr-4">${result}</td>`
+      )
+    }
   }
 
   jsonView() {
@@ -101,7 +153,7 @@ class tableView extends Component {
         rlt += 
         `
           <tr>
-            <td colspan="13" class="tr-color"><h3>${day}</h3></td>
+            <td colspan="${this.getColSpan()}" class="tr-color"><h3>${day}</h3></td>
           </tr>
         `
       }
@@ -125,6 +177,7 @@ class tableView extends Component {
           for (var key1 in value) {
             values += `<td>${value[key1][0]} ${value[key1][1]}</td>`
           }
+          if (this.state.sport === 'UFC') values += this.calcResult(value)
           let name = item[i].name
           let id = item[i].id
           if (id === undefined) id = ''
@@ -149,7 +202,7 @@ class tableView extends Component {
             `
           }
         }
-        rlt += `<tr><td colspan="13" class="tr-color"></td></tr>`
+        rlt += `<tr><td colspan="${this.getColSpan()}" class="tr-color"></td></tr>`
       }
     }
     return rlt;
@@ -215,6 +268,9 @@ class tableView extends Component {
                           </th>
                         )
                       })
+                    }
+                    {
+                      this.renderResults()
                     }
                   </tr>
                 </thead>
