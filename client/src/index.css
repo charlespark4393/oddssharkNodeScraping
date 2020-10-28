@@ -69,5 +69,15 @@ th {
   vertical-align: center !important;
 }
 .table-con {
-  height: calc(100vh - 150px);
+  height: calc(100vh - 115px);
+}
+
+.tableFixHead th {
+  position: sticky;
+  top: 0;
+  background: #eee;
+}
+
+.spinner-border {
+  font-size: 1rem;
 }

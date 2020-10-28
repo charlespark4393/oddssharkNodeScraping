@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Router, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
 import {
@@ -20,14 +20,13 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Router history={history}>
+        <BrowserRouter history={history}>
           <Switch>
-            <Route path="/json" component={jsonView} />
-            <Route path="/table" component={tableView} />
-            <Route path="/" component={jsonView} />
-            <Redirect from="*" to={"/json"} />
+            <Route exact path="/json" component={jsonView} />
+            <Route excat path="/table" component={tableView} />
+            <Redirect from="*" to={"/table"} />
           </Switch>
-        </Router>
+        </BrowserRouter>
       </div>
     )
   }

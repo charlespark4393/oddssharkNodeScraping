@@ -37,6 +37,20 @@ const sports = {
   }
 }
 
+const images = [
+  "https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_opening_eng.png",
+  "https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_bovada.png",
+  "https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_betonline_0.png",
+  "https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_intertops.png",
+  "https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_sportsbetting.png",
+  "https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_betnow.png",
+  "https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_gtbets_2.png",
+  "https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_skybook.png",
+  "https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_5dimes_0.png",
+  "https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_sportbet.png"
+]
+
 module.exports = {
   Sports: sports,
+  Images: images
 }

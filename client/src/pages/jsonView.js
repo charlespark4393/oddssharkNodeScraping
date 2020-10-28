@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ReactJson from 'react-json-view'
+import { withRouter } from "react-router-dom";
 import {
   scrapingService
 } from '../service'
@@ -21,6 +22,11 @@ class jsonView extends Component {
     this.changeSport = this.changeSport.bind(this)
     this.startScraping = this.startScraping.bind(this)
     this.changeSpread = this.changeSpread.bind(this)
+    this.tableView = this.tableView.bind(this)
+  }
+
+  tableView() {
+    this.props.history.push('/table')
   }
 
   componentDidMount() {
@@ -45,12 +51,18 @@ class jsonView extends Component {
       spread,
       spreads
     })
+    setTimeout(() => {
+      this.startScraping()
+    }, 100)
   }
 
   changeSpread(e) {
     this.setState({
       spread: e.target.innerText
     })
+    setTimeout(() => {
+      this.startScraping()
+    }, 100)
   }
 
   startScraping() {
@@ -86,7 +98,20 @@ class jsonView extends Component {
         <div className="row mt-4">
           <div className="col-12 col-md-4 border">
             <div className="mb-3 pt-2">
-              <h3 className="header pb-1">Settings</h3>
+              <h3 className="header d-flex justify-content-between header pb-1 align-items-center">
+                <div>Settings</div>
+                {
+                  this.state.progress && 
+                  <div className="ml-3 spinner-border white" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                }
+              </h3>
+            </div>
+            <div className="mb-3">
+              <button type="button" className="w-100 btn btn-secondary" onClick={this.tableView}>
+                Table View
+              </button>
             </div>
             <div className="select-sports mb-3">
               <div className="dropdown">
@@ -120,17 +145,6 @@ class jsonView extends Component {
                 </div>
               </div>
             </div>
-            <div className="mb-3">
-              <button disabled={sport === 'Select Sports...'} type="button" className="w-100 btn btn-success d-flex scraping" onClick={this.startScraping}>
-                Scraping 
-                {
-                  this.state.progress && 
-                  <div className="ml-3 spinner-border spinner-border-sm white" role="status">
-                    <span className="sr-only">Loading...</span>
-                  </div>
-                }
-              </button>
-            </div>
           </div>
           <div className="col-12 col-md-8 border">
             <div className="mb-3 pt-2">
@@ -158,4 +172,4 @@ class jsonView extends Component {
   }
 }
 
-export default jsonView;
+export default withRouter(jsonView);

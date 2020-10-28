@@ -1,9 +1,11 @@
 import { Component } from "react";
+import { withRouter } from "react-router-dom";
 import {
   scrapingService
 } from '../service'
 
 const Sports = require('../constant').Sports
+const Images = require('../constant').Images
 
 class tableView extends Component {
   constructor(props) {
@@ -20,6 +22,11 @@ class tableView extends Component {
     this.changeSpread = this.changeSpread.bind(this)
     this.getResult = this.getResult.bind(this)
     this.renderContent = this.renderContent.bind(this)
+    this.jsonView = this.jsonView.bind(this)
+  }
+
+  jsonView() {
+    this.props.history.push('/json')
   }
 
   getResult() {
@@ -152,16 +159,19 @@ class tableView extends Component {
     const {spread, spreads, sport, sports} = this.state
     return (
       <div className="app-container container">
-        <div className="row mt-4">
-          <div className="col-12 border pt-2 pb-2">
-            <div className="mb-3 pt-2">
-              <div className="dropdown d-flex justify-content-between header pb-2">
+        <div className="row mt-3">
+          <div className="col-12 border p-2">
+            <div className="pt-2">
+              <div className="dropdown d-flex justify-content-between header pb-2 align-items-center">
                 {
                   this.state.progress ?
                   <div className="ml-3 spinner-border white" role="status">
                     <span className="sr-only">Loading...</span>
                   </div>
-                  : <div></div>
+                  : 
+                  <div>
+                    <button className="btn btn-secondary" onClick={this.jsonView}>Json View</button>
+                  </div>
                 }
                 <button className="table-select-sport btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSpread" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   {sport}
@@ -177,7 +187,7 @@ class tableView extends Component {
                 </div>
               </div>
             </div>
-            <div className="table-con">
+            <div className="table-con position-relative tableFixHead">
               <table className="table table-bordered table-responsive table-sm h-100">
                 <thead>
                   <tr>
@@ -197,43 +207,18 @@ class tableView extends Component {
                         </div>
                       </div>
                     </th>
-                    <th>
-                      <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_opening_eng.png"></img>
-                    </th>
-                    <th>
-                      <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_bovada.png"></img>
-                    </th>
-                    <th>
-                      <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_betonline_0.png"></img>
-                    </th>
-                    <th>
-                      <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_intertops.png"></img>
-                    </th>
-                    <th>
-                      <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_sportsbetting.png"></img>
-                    </th>
-                    <th>
-                      <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_betnow.png"></img>
-                    </th>
-                    <th>
-                      <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_gtbets_2.png"></img>
-                    </th>
-                    <th>
-                      <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_skybook.png"></img>
-                    </th>
-                    <th>
-                      <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_5dimes_0.png"></img>
-                    </th>
-                    <th>
-                      <img alt="thimage" className="t-image" src="https://www.oddsshark.com/sites/default/files/images/sportsbook-reviews/logos/sblogo_sportbet.png"></img>
-                    </th>
+                    {
+                      Images.map((item, index) => {
+                        return (
+                          <th key={index}>
+                            <img alt="thimage" className="t-image" src={item}></img>
+                          </th>
+                        )
+                      })
+                    }
                   </tr>
                 </thead>
                 <tbody dangerouslySetInnerHTML={{ __html: this.renderContent() }} >
-
-                  {/* {
-                    this.renderContent()
-                  } */}
                 </tbody>
               </table>
             </div>
@@ -244,4 +229,4 @@ class tableView extends Component {
   }
 }
 
-export default tableView;
+export default withRouter(tableView);
